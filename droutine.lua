@@ -34,7 +34,7 @@ end
 -- creating a new container
 function DR:new()
    -- create table and set its metatable to the library
-   dr = {}
+   local dr = {}
    setmetatable( dr, self )
 
    return dr
