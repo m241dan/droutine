@@ -16,12 +16,12 @@ DR.__call = function( t, ... )
 
    -- sanity checks
    if( not t.thread ) then
-      error( "Call on DRoutine has no thread." )
+      print( "Call on DRoutine has no thread." )
       return
    end
 
    if( coroutine.status( t.thread ) == "dead" ) then
-      error( "Call on DRoutine with a dead thread." )
+      print( "Call on DRoutine with a dead thread." )
       return
    end
    -- make the call, or in this case the resume and return the results
@@ -32,11 +32,10 @@ end
 -- DR:new() --
 --------------
 -- creating a new container
-function DR:new()
+function DR:new( thread )
    -- create table and set its metatable to the library
    local dr = {}
    setmetatable( dr, self )
-
    return dr
 end
 -- returns a new DR object
@@ -49,7 +48,7 @@ function DR:status()
    if( not self.thread ) then
       return "none"
    end
-   return coroutine.status( t.thread )
+   return coroutine.status( self.thread )
 end
 -- returns a string
 
@@ -73,9 +72,11 @@ function DR:wrap( arg )
       if( t == "function" ) then
          arg = coroutine.create( arg )
       elseif( t ~= "thread" ) then
-         error( "DR:wrap has reached the end of its two steps deep logic and did not end up with a thread." )
+         print( "DR:wrap has reached the end of its two steps deep logic and did not end up with a thread." )
          return
       end
    end
    self.thread = arg
 end
+
+return DR
